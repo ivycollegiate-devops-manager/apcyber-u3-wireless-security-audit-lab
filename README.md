@@ -58,16 +58,23 @@ Click **Fork** at the top right of the repo page, then **Create fork**. Leave ev
 Pick one:
 
 - **Codespace:** on your fork's page, Code → Codespaces → Create codespace on `main`.
-- **Class server:** go to `https://vscode.ivycollegiate.org`, log in with your school account, open a terminal, and clone **your fork** into a folder with a plain name:
+- **Class server:** go to `https://vscode.ivycollegiate.org`, log in with your school account, and clone **your fork** into a folder with a plain name.
+
+On GitHub, open your fork — the copy of this lab under your own username:
+
+1. Click the green **<> Code** button.
+2. Under **HTTPS**, click the copy button (or select the URL).
+3. In the VS Code server terminal, run:
 
 ```bash
 cd ~
-whoami
-git clone https://github.com/<your-username>/apcyber-u3-wireless-security-audit-lab.git apcyber-u3-wireless-audit
+git clone <paste the HTTPS URL you copied> apcyber-u3-wireless-audit
 cd apcyber-u3-wireless-audit
 ```
 
-Run `whoami` first — it prints your username on the class server. Replace `<your-username>` with your actual GitHub username. When GitHub asks for credentials, use your username and a **Personal Access Token**, not your GitHub password.
+Replace `<paste the HTTPS URL you copied>` with the URL you copied. Keep the `apcyber-u3-wireless-audit` folder name at the end.
+
+Run `whoami` if you need your username at the GitHub credential prompt. When GitHub asks for credentials, use your username and a **Personal Access Token**, not your GitHub password.
 
 - **What this does:** downloads your fork to the machine you are working on and moves your terminal inside it.
 - **Why the short folder name:** every command below uses `cd ~/apcyber-u3-wireless-audit`. Do not leave the directory name implied.
