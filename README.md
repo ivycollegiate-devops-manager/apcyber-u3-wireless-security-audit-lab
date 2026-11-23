@@ -17,16 +17,16 @@ apcyber-u3-wireless-audit/
 ├── wireless_networks.csv   ← ships with the repo. Do not edit.
 ├── wireless_audit.py       ← ships with the repo. Read it. Do not edit.
 ├── audit_checklist.md      ← ships with the repo. Read it. Do not edit.
-├── audit_results.csv       ← created by the script. THIS IS YOUR GRADED FILE.
+├── audit_results.csv       ← created by the script. THIS IS THE FILE YOU HAND IN.
 └── EXECUTIVE_SUMMARY.md    ← you create this. One paragraph.
 ```
 
-| File | Who writes it | What it must contain | How you check it |
+| File | Who writes it | What it must contain | How you self-check |
 |------|---------------|----------------------|------------------|
-| `audit_results.csv` | the script creates it, you fill it in | 14 columns; `analyst_notes` filled on every row | `python3 -c "import pandas as pd; df=pd.read_csv('audit_results.csv'); print(len(df.columns), df['analyst_notes'].notna().sum())"` |
+| `audit_results.csv` | the script creates it, you fill it in | 14 columns; no blank `analyst_notes` | `python3 -c "import pandas as pd; df=pd.read_csv('audit_results.csv'); print(len(df.columns), (df['analyst_notes'].fillna('').astype(str).str.strip()=='').sum())"` |
 | `EXECUTIVE_SUMMARY.md` | you | total findings, severity counts, the one fix you would fund first, one named false positive | open the file and read it back |
 
-The one command that produces the graded artefact:
+The one command that creates the file you hand in:
 
 ```bash
 python3 wireless_audit.py
@@ -51,7 +51,7 @@ python3 wireless_audit.py
 Click **Fork** at the top right of the repo page, then **Create fork**. Leave every option at its default.
 
 - **What this does:** copies the lab into your own GitHub account. The teacher's copy is the *upstream*; `github.com/<your-username>/apcyber-u3-wireless-security-audit-lab` is *yours*.
-- **Why this is necessary:** you cannot write to the teacher's repository. The grading workflow runs on *your* fork, so your completed work has to live there.
+- **Why this is necessary:** you cannot write to the teacher's repository. Pushing to *your* fork is how you hand the work in.
 
 ### Step 2 — Open your fork in VS Code
 
@@ -125,7 +125,7 @@ Do not edit any of them, and do not "fix" the engine if a check reports a proble
 
 ---
 
-## PART 2 — RUN THE ENGINE (this creates your graded file)
+## PART 2 — RUN THE ENGINE (this creates the file you hand in)
 
 Run it in the **terminal panel**, not a notebook:
 
@@ -172,7 +172,7 @@ For **every row**, replace the empty `analyst_notes` cell with text in this shap
 High — <one sentence tying this finding to that row's notes / vendor_oui / client_count>. Remediation: <specific action>. Owner: <team>. Timeline: <48h / 2 weeks / next window>.
 ```
 
-Rules the grader looks for, so get the literal words in:
+Requirements the teacher checks, so get the literal words in:
 
 | Requirement | Put this in `analyst_notes` |
 |-------------|------------------------------|
@@ -185,7 +185,7 @@ For the top three findings, use the full remediation template from `audit_checkl
 
 You do not have to agree with `default_severity`. It is the engine's guess. Downgrade an accepted risk to `Accepted Risk` and say why; upgrade a finding when the context warrants it.
 
-Save the file (Ctrl+S / Cmd+S) before you leave this part. The grading workflow reads the file on GitHub, not your editor buffer.
+Save the file (Ctrl+S / Cmd+S) before you leave this part. The teacher reads the file on GitHub, not your editor buffer.
 
 ---
 
@@ -206,7 +206,7 @@ Create and write the file first; do not put `python3` in the same block as `code
 3. If you had budget to fix only **one** thing, which finding first — and why?
 4. Which specific finding is a false positive? Name its BSSID and SSID and give one sentence why.
 
-Put the false positive in the `analyst_notes` cell of that row **as well** — that is the only place the grading workflow reads.
+Put the false positive in the `analyst_notes` cell of that row **as well**, not only in the summary, so the teacher sees it next to the finding.
 
 Save.
 
@@ -214,7 +214,7 @@ Save.
 
 ## PART 5 — SAVE, COMMIT, PUSH — THIS IS THE TURN-IN
 
-Filling in files changes them only on your computer. Three separate commands move them to your graded fork. Run them one at a time from the repo root:
+Filling in files changes them only on your computer. Three separate commands move them to your submitted fork. Run them one at a time from the repo root:
 
 ```bash
 cd ~/apcyber-u3-wireless-audit
@@ -236,12 +236,12 @@ git push origin main
 ```
 
 - **What this does:** uploads the commit to `origin` (your fork) on branch `main`.
-- **Why:** **this is the delivery.** Until you push, GitHub has the old empty CSV and the grader sees nothing.
+- **Why:** **this is the delivery.** Until you push, GitHub has the old empty CSV and the teacher sees nothing.
 
 **Verify it worked — do not skip this:**
 
-1. Refresh your fork at `https://github.com/<your-username>/apcyber-u3-wireless-security-audit-lab`. Open `audit_results.csv` on GitHub — your notes must be there.
-2. Click the **Actions** tab and open the `Grade Wireless Security Audit` run for your push. A red ✗ means a check failed — read the step output. Fix the file, save, then `git add` → `git commit` → `git push` again. If your notes are clearly present on GitHub but the check reports them empty, tell the teacher rather than editing the engine.
+1. Refresh your fork at `https://github.com/<your-username>/apcyber-u3-wireless-security-audit-lab`. Open `audit_results.csv` on GitHub — your notes must be there. Open `EXECUTIVE_SUMMARY.md` too.
+2. Check the file's last-commit line on GitHub: it must say `Complete U3 L5 wireless security audit`. If the old empty CSV is still showing, you pushed the wrong commit — go back and re-push.
 3. Copy the push confirmation line from the terminal. That line plus your total finding count is your turn-in evidence.
 
 ---
@@ -297,15 +297,17 @@ Not every check fires on this dataset. A check with no rows is not a finding you
 
 **Context is everything.** The `notes` and `vendor_oui` columns are your primary clues. Use them. The severity words above are examples, not answers — judge each row on its own evidence.
 
-## HOW YOU ARE GRADED
+## HOW YOUR WORK IS REVIEWED
 
-The workflow on your fork checks `audit_results.csv` for:
+There is no automated grader on this repo. The teacher reads what you pushed:
 
-- the file exists and has all 14 columns
-- `analyst_notes` filled in
-- severity words, remediation proposals, and a named false positive in `analyst_notes`
+- `audit_results.csv` has all 14 columns and `analyst_notes` on every row
+- a severity for each finding, with a justification tied to that row's evidence
+- remediation for the top three findings (specific action, owner, timeline)
+- at least one false positive named by BSSID and SSID, with a reason
+- `EXECUTIVE_SUMMARY.md` answers all four questions
 
-Those checks are a floor, not the rubric. The teacher reads your notes and executive summary for the quality of the triage: correct severity for the context, a defensible justification, and a specific remediation for the top three.
+Nothing checks this automatically, so the self-check in PART 5 is the only confirmation you get before the teacher marks it. Do not skip it.
 
 ---
 
