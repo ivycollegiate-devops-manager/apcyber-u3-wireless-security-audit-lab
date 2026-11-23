@@ -62,11 +62,12 @@ Pick one:
 
 ```bash
 cd ~
+whoami
 git clone https://github.com/<your-username>/apcyber-u3-wireless-security-audit-lab.git apcyber-u3-wireless-audit
 cd apcyber-u3-wireless-audit
 ```
 
-Replace `<your-username>` with your actual GitHub username. When GitHub asks for credentials, use your username and a **Personal Access Token**, not your GitHub password.
+Run `whoami` first — it prints your username on the class server. Replace `<your-username>` with your actual GitHub username. When GitHub asks for credentials, use your username and a **Personal Access Token**, not your GitHub password.
 
 - **What this does:** downloads your fork to the machine you are working on and moves your terminal inside it.
 - **Why the short folder name:** every command below uses `cd ~/apcyber-u3-wireless-audit`. Do not leave the directory name implied.
