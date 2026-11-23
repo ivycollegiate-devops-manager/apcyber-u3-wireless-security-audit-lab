@@ -55,9 +55,8 @@ Click **Fork** at the top right of the repo page, then **Create fork**. Leave ev
 
 ### Step 2 — Open your fork in VS Code
 
-Pick one:
+Use the class server:
 
-- **Codespace:** on your fork's page, Code → Codespaces → Create codespace on `main`.
 - **Class server:** go to `https://vscode.ivycollegiate.org`, log in with your school account, and clone **your fork** into a folder with a plain name.
 
 On GitHub, open your fork — the copy of this lab under your own username:
@@ -75,6 +74,14 @@ cd apcyber-u3-wireless-audit
 Replace `<paste the HTTPS URL you copied>` with the URL you copied. Keep the `apcyber-u3-wireless-audit` folder name at the end.
 
 Run `whoami` if you need your username at the GitHub credential prompt. When GitHub asks for credentials, use your username and a **Personal Access Token**, not your GitHub password.
+
+Check that the clone worked before going on:
+
+```bash
+ls -d ~/apcyber-u3-wireless-audit && cd ~/apcyber-u3-wireless-audit && pwd && ls wireless_audit.py
+```
+
+You must see the folder path and `wireless_audit.py`. If `ls` says "No such file or directory", the clone never created the folder — repeat the clone step with the URL copied from the Code button. If Git says the destination folder already exists, do not delete it blindly; open it, run `git status`, and ask the teacher.
 
 - **What this does:** downloads your fork to the machine you are working on and moves your terminal inside it.
 - **Why the short folder name:** every command below uses `cd ~/apcyber-u3-wireless-audit`. Do not leave the directory name implied.
@@ -108,7 +115,7 @@ python3 --version
 python3 -c "import pandas; print(pandas.__version__)"
 ```
 
-Expect Python 3.11 and a pandas version number. A `ModuleNotFoundError` means you are not in the lab environment — use the Codespace or the class server, not your laptop's default Python.
+Expect Python 3.11 and a pandas version number. A `ModuleNotFoundError` means you are not in the lab environment — use the class server, not your laptop's default Python.
 
 ---
 
