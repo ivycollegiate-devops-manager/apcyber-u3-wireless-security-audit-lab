@@ -35,6 +35,11 @@ def load_data():
     """Load the wireless networks dataset."""
     try:
         df = pd.read_csv(INPUT_CSV)
+        # CSVs edited by hand can carry numeric-looking text or "True"/"False"
+        # strings. Normalise once here so every check sees the same dtypes.
+        for column in ("channel", "signal_dbm", "client_count"):
+            df[column] = pd.to_numeric(df[column], errors="coerce")
+        df["is_hidden"] = df["is_hidden"].astype(str).str.strip().str.lower().eq("true")
         print(f"[+] Loaded {len(df)} networks from {INPUT_CSV}")
         return df
     except FileNotFoundError:
@@ -90,16 +95,25 @@ def check_rogue_same_ssid_diff_bssid(df):
 
 
 def check_rogue_typosquat(df):
-    """ROGUE-002: SSID mimicking known corporate SSID with typo."""
-    corporate_ssids = df[df["ssid"].str.startswith(CORPORATE_SSID_PREFIX, na=False)]["ssid"].unique()
+    """ROGUE-002: SSID mimicking a known corporate SSID with a typo."""
+    ssids = df["ssid"].fillna("").astype(str)
+    corporate = ssids.str.startswith(CORPORATE_SSID_PREFIX)
+    # "Known" means the SSID is actually seen on an approved AP. Using every
+    # TSMC-* string as the reference set would include the typo itself and make
+    # this check impossible to fire.
+    managed = df[corporate & df["vendor_oui"].isin(APPROVED_OUIS)]
+    corporate_ssids = managed["ssid"].dropna().astype(str).unique()
+
     findings = []
     for _, net in df.iterrows():
-        ssid = net["ssid"]
-        if ssid == "" or ssid in corporate_ssids:
+        raw_ssid = net["ssid"]
+        if pd.isna(raw_ssid):
+            continue  # hidden SSID
+        ssid = str(raw_ssid)
+        if not ssid.startswith(CORPORATE_SSID_PREFIX) or ssid in corporate_ssids:
             continue
-        # Check if it's a typo of a corporate SSID (edit distance 1-2, same prefix)
         for corp_ssid in corporate_ssids:
-            if ssid.startswith(CORPORATE_SSID_PREFIX) and levenshtein(ssid, corp_ssid) <= 2:
+            if levenshtein(ssid, corp_ssid) <= 2:
                 findings.append(net)
                 break
     return pd.DataFrame(findings) if findings else pd.DataFrame(columns=df.columns)
@@ -243,6 +257,9 @@ def run_all_checks(df):
                     })
         except Exception as e:
             print(f"[!] Check {check_id} failed: {e}")
+            # A swallowed failure silently omits a check from the graded CSV.
+            # Stop instead of handing students an incomplete audit.
+            raise
 
     return pd.DataFrame(all_findings)
 

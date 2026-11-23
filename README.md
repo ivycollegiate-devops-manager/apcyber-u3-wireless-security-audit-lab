@@ -137,7 +137,7 @@ python3 wireless_audit.py
 - **What this does:** loads `wireless_networks.csv`, runs the checks, prints a summary, and writes `audit_results.csv` into the repo root.
 - **Why the terminal:** you need to see the printout, and you need the file to land on disk.
 
-You should see a `Loaded 27 networks` line, a findings count, severity counts, and `Results written to audit_results.csv`. You may also see a line beginning `[!] Check ROGUE-002 failed`. That comes from the provided engine, not from anything you did. Leave the script alone and carry on.
+You should see a `Loaded 27 networks` line, a findings count, severity counts, and `Results written to audit_results.csv`. If a check ever fails, the engine stops with an error and writes no results — tell the teacher rather than editing the script.
 
 Confirm the file exists:
 

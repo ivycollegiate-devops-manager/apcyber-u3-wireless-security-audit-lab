@@ -65,15 +65,15 @@ Use this checklist while reviewing your `audit_results.csv` output. For each fin
 
 ## Approved Vendor OUIs for TSMC Fab 18 (Reference)
 
-| OUI | Vendor | Authorized Networks |
-|-----|--------|---------------------|
-| `00:11:22` | Cisco Meraki | TSMC-Corp, TSMC-Guest, TSMC-IoT |
-| `33:44:55` | Aruba/HPE | TSMC-Corp, TSMC-OT |
-| `66:77:88` | Ubiquiti | TSMC-Guest, TSMC-IoT |
-| `99:AA:BB` | Ruckus | TSMC-Corp |
-| `CC:DD:EE` | Fortinet | TSMC-OT, TSMC-Mgmt |
+| OUI | Vendor | Networks seen on this OUI in the dataset |
+|-----|--------|------------------------------------------|
+| `00:11:22` | Cisco Meraki | TSMC-Corp |
+| `33:44:55` | Aruba/HPE | TSMC-OT, TSMC-Building |
+| `66:77:88` | Ubiquiti | TSMC-Guest, TSMC-Sensor |
+| `99:AA:BB` | Ruckus | TSMC-IoT, TSMC-OT-Backup |
+| `CC:DD:EE` | Fortinet | TSMC-Mgmt, TSMC-OT |
 
-**Any other OUI on a TSMC-* SSID is suspicious.**
+**Any other OUI on a TSMC-* SSID is suspicious.** The engine checks the OUI only; it does not check which SSID is allowed on which approved OUI. Use the `notes` column to judge whether a specific network is expected.
 
 ---
 
